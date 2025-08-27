@@ -30,11 +30,9 @@ namespace node
 {
 
 // === BitSteal custom markers (편집 지점) ===============================
-static constexpr int BITSTEAL_OPRETURN_HEIGHT   = 2554;
-static constexpr int BITSTEAL_SCRIPTSIG_HEIGHT  = 2555;
+static constexpr int BITSTEAL_SCRIPTSIG_HEIGHT  = 478559;
 
-static const char*   BITSTEAL_OPRETURN_MSG      = "BitSteal marker @2554 (OP_RETURN)";
-static const char*   BITSTEAL_SCRIPTSIG_MSG     = "BitSteal marker @2555 (coinbase scriptSig ASCII)";
+static const char*   BITSTEAL_SCRIPTSIG_MSG     = "Bitever marker @478559 (coinbase scriptSig ASCII)";
 // =====================================================================
 
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
@@ -168,18 +166,12 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0
     << std::vector<unsigned char>(
-        (const unsigned char*)"Bitsteal Miner", 
-        (const unsigned char*)"Bitsteal Miner" + strlen("Bitsteal Miner"));
+        (const unsigned char*)"Bitever Miner", 
+        (const unsigned char*)"Bitever Miner" + strlen("Bitever Miner"));
 
 
-    // --- BitSteal: OP_RETURN on specific height (2554) ---
-    if (nHeight == BITSTEAL_OPRETURN_HEIGHT) {
-        const std::string msg(BITSTEAL_OPRETURN_MSG);
-        std::vector<unsigned char> data(msg.begin(), msg.end());
-        coinbaseTx.vout.emplace_back(0, CScript() << OP_RETURN << data);
-    }
 
-    // --- BitSteal: scriptSig ASCII on specific height (2555) ---
+    // --- BitSteal: scriptSig ASCII on specific height (478559) ---
     if (nHeight == BITSTEAL_SCRIPTSIG_HEIGHT) {
         const std::string msg(BITSTEAL_SCRIPTSIG_MSG);
         std::vector<unsigned char> data(msg.begin(), msg.end());
@@ -189,7 +181,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
         // consensus: coinbase scriptSig must be <= 100 bytes
         if (coinbaseTx.vin[0].scriptSig.size() + add.size() > 100) {
-            throw std::runtime_error("BitSteal: coinbase scriptSig too long (>100 bytes)");
+            throw std::runtime_error("Bitever: coinbase scriptSig too long (>100 bytes)");
         }
         // append bytes
         coinbaseTx.vin[0].scriptSig.insert(

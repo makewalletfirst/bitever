@@ -73,8 +73,8 @@ public:
         consensus.BIP65Height = 388381; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
         consensus.BIP66Height = 363725; // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
         consensus.CSVHeight = 419328; // 000000000000000004a1b34462cb8aeebd5799177f7a29cf28f2d1961716b5b5
-        consensus.SegwitHeight = 3000;
-        consensus.MinBIP9WarningHeight = 3000 + consensus.nMinerConfirmationWindow;
+        consensus.SegwitHeight = 478560;
+        consensus.MinBIP9WarningHeight = 478560 + consensus.nMinerConfirmationWindow;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
@@ -82,7 +82,7 @@ public:
         consensus.fPowNoRetargeting = false;
 	
 	
-	consensus.nForkHeight = 2548; //위에서 스탑하고 확인해야함
+	consensus.nForkHeight = 478559; //위에서 스탑하고 확인해야함
         consensus.powLimitPostFork = uint256S("0000ffff00000000000000000000000000000000000000000000000000000000");
         consensus.fPowAllowMinDifficultyBlocksPostFork = true;
         consensus.fPowNoRetargetingPostFork = true;
