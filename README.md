@@ -1,5 +1,53 @@
-24.0v full build from bottom: hardfork and sync and mining and fork block script stamping(about 2000)
-and segwit height change 3000
+24.0v full build from bottom: hardfork and sync and mining and fork block script stamping(about 478559)
+segwit activate at 478559
+subverion fixed
+=============================================
+# 네트워크 설정
+listen=1
+server=1
+daemon=1
+port=8333
+txindex=1
+
+# RPC 설정
+rpcuser=user
+rpcpassword=pass
+rpcport=8334
+rpcbind=127.0.0.1
+rpcallowip=127.0.0.1
+
+# 채굴 설정
+gen=1
+genproclimit=1
+
+# 네트워크 연결 설정
+maxconnections=20
+
+# DNS 시드 비활성화 (중요!)
+dnsseed=0
+
+# 로깅 설정
+debug=1
+logips=1
+
+# 데이터 디렉토리 (선택사항)
+# datadir=/path/to/bitsteal/node1
+
+# 메모리 풀 설정
+maxmempool=50
+
+# 블록 생성 간격을 짧게 (테스트용)
+blockminsize=0
+blockmaxsize=750000
+
+# P2P 메시지 로깅 (디버깅용)
+debug=net
+debug=addrman
+
+fallbackfee=0.00001000
+maxmempool=1 # 1MB로 제한하여 오래된 트랜잭션 자동 제거
+mempoolexpiry=1 # 1시간 후 만료
+
 =============================================
 NODE A
 

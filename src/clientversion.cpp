@@ -16,7 +16,7 @@
  * for both bitcoind and bitcoin-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("BITSTEAL core");
+const std::string CLIENT_NAME("BITEVER core");
 
 
 #ifdef HAVE_BUILD_INFO
