@@ -1,136 +1,114 @@
-24.0v full build from bottom: hardfork and sync and mining and fork block script stamping(about 478559)
-segwit activate at 478559
-subverion fixed
-=============================================
-# 네트워크 설정
-listen=1
-server=1
-daemon=1
-port=8333
-txindex=1
+# BitEver (BEC)
 
-# RPC 설정
-rpcuser=user
-rpcpassword=pass
-rpcport=8334
-rpcbind=127.0.0.1
-rpcallowip=127.0.0.1
+> *"2017년, 블록 사이즈 워. 그 당시의 체인을 직접 경험하세요"*  
+> *"Experience the chain from the 2017 Bitcoin block size war — firsthand."*
 
-# 채굴 설정
-gen=1
-genproclimit=1
+BitEver (BEC) is a Bitcoin hard fork designed for **blockchain education and hands-on learning**.  
+The chain launched independently from Bitcoin block **#478,559**, forked at the same point as Bitcoin Cash (#478,558).
 
-# 네트워크 연결 설정
-maxconnections=20
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord)](https://discord.com/invite/dfSF58pzZB)
+[![Block Explorer](https://img.shields.io/badge/Explorer-bitever.ever--chain.xyz-blue)](https://bitever.ever-chain.xyz)
+[![YouTube](https://img.shields.io/badge/YouTube-@지만쫌-red?logo=youtube)](http://www.youtube.com/@지만쫌)
 
-# DNS 시드 비활성화 (중요!)
-dnsseed=0
+---
 
-# 로깅 설정
-debug=1
-logips=1
+## What is BitEver?
 
-# 데이터 디렉토리 (선택사항)
-# datadir=/path/to/bitsteal/node1
+BitEver is **not just another fork coin**.  
+It is a live Bitcoin-equivalent chain built as an accessible environment where anyone — from beginners to developers — can experience real blockchain mechanics: mining, wallet creation, and transaction signing.
 
-# 메모리 풀 설정
-maxmempool=50
+| Property | Value |
+|---|---|
+| Ticker | **BEC** |
+| Fork Source | Bitcoin Core |
+| Fork Block | #478,558 (same as BCH) |
+| Independent Chain Start | #478,559 |
+| SegWit Activation | Block #478,560 |
+| Difference from Bitcoin | Magic bytes only |
+| Issuance Policy | Identical to Bitcoin (21M cap, halving) |
 
-# 블록 생성 간격을 짧게 (테스트용)
-blockminsize=0
-blockmaxsize=750000
+> Bitcoin's full codebase and consensus rules are preserved as-is.  
+> Only the network magic bytes are changed — making BEC a clean, isolated Bitcoin-equivalent network.
 
-# P2P 메시지 로깅 (디버깅용)
-debug=net
-debug=addrman
+---
 
-fallbackfee=0.00001000
-maxmempool=1 # 1MB로 제한하여 오래된 트랜잭션 자동 제거
-mempoolexpiry=1 # 1시간 후 만료
+## Features
 
-=============================================
-NODE A
+### Block Explorers
+- **Esplora-based Web Explorer** — [bitever.ever-chain.xyz](https://bitever.ever-chain.xyz)  
+  Supports Satoshi-era wallet lookup (P2PKH → P2PK auto-query). First load may be slow.
+- **BTC-RPC Explorer** — [bitever2.ever-chain.xyz](https://bitever2.ever-chain.xyz)  
+  RPC-level block and transaction inspection.
 
-daemon=1
+### Wallet
+- Custom **Electrum wallet** provided — no command-line required  
+- Full GUI-based wallet management for non-technical users
 
-# --- P2P ---
-port=8333                # 외부 노드와 블록/트랜잭션 교환
+### Community
+- Discord server for users and node operators: [Join here](https://discord.com/invite/dfSF58pzZB)
+- YouTube channel with Bitcoin education content: [@지만쫌](http://www.youtube.com/@지만쫌)
 
-# --- RPC ---
-server=1
-rpcuser=user
-rpcpassword=pass
-rpcbind=127.0.0.1
-rpcallowip=127.0.0.1
-rpcport=8334             # electrs가 붙는 포트(로컬 전용)
+---
 
-# --- 인덱싱/보관 ---
-txindex=1                # explorer/electrs 용으로 필수
-prune=0                  # 전체 보관(권장). 용량 부족 시 값 조정 가능
+## Running a Node
 
-# --- (선택) 실시간 반영용 ZMQ: 지금 electrs v3.2.0에서는 미사용이므로 주석 유지 ---
-# zmqpubrawblock=tcp://0.0.0.0:28332
-# zmqpubrawtx=tcp://0.0.0.0:28333
+### 1. Install dependencies
 
-# --- 기타 권장 ---
-listen=1                 # P2P 수신
+```bash
+sudo apt update
+sudo apt install -y build-essential autoconf automake libtool \
+  pkg-config libssl-dev libevent-dev \
+  libboost-system-dev libboost-filesystem-dev \
+  libboost-test-dev libboost-thread-dev \
+  libdb-dev libdb++-dev libsqlite3-dev \
+  qtbase5-dev qttools5-dev-tools \
+  git curl wget
+```
 
+### 2. Build
 
-fallbackfee=0.00001000
-maxmempool=50 # 1MB로 제한하여 오래된 트랜잭션 자동 제거
-mempoolexpiry=1 # 1시간 후 만료
+```bash
+./autogen.sh
+./configure
+make clean
+make -j$(nproc)
+```
 
+### 3. Run
 
-====================================
-NODE B
+```bash
+# Start daemon (local only)
+./src/bitcoind -daemon
 
-# 네트워크 설정
-listen=1
-server=1
-daemon=1
-port=8333
+# Start and connect to the seed node
+./src/bitcoind -connect=bitevernode.ever-chain.xyz -daemon
+```
 
-# RPC 설정
-rpcuser=user
-rpcpassword=pass
-rpcport=8334
-rpcbind=127.0.0.1
-rpcallowip=127.0.0.1
-rpcallowip=192.168.1.0/24
+> DNS seed is served via pdns. The network is live and accepting peer connections.
 
-# 채굴 비활성화
-gen=0
+---
 
-# 네트워크 연결 설정
-maxconnections=20
-connect=34.64.45.122:8333
+## Vision
 
-# DNS 시드 비활성화 (중요!)
-dnsseed=0
+- **Education-first**: Real blockchain experience without the financial risk of mainnet Bitcoin
+- **Accessible**: GUI wallet removes the command-line barrier for new users
+- **Long-term**: Community-driven growth, with an automated exchange program planned
 
-# 로깅 설정
-debug=1
-logips=1
+---
 
-# 데이터 디렉토리 (선택사항)
-# datadir=/path/to/bitsteal/node2
+## Links
 
-# 메모리 풀 설정
-maxmempool=50
+| Resource | URL |
+|---|---|
+| Block Explorer (Esplora) | https://bitever.ever-chain.xyz |
+| Block Explorer (RPC) | https://bitever2.ever-chain.xyz |
+| Discord | https://discord.com/invite/dfSF58pzZB |
+| YouTube | http://www.youtube.com/@지만쫌 |
 
-# P2P 메시지 로깅 (디버깅용)
-debug=net
-debug=addrman
+---
 
-# 블록 동기화 설정
-assumevalid=0
+## License
 
-fallbackfee=0.00001000
-maxmempool=1 # 1MB로 제한하여 오래된 트랜잭션 자동 제거
-mempoolexpiry=1 # 1시간 후 만료
-
-
-
-
-
+MIT — See [COPYING](./COPYING) for details.  
+Bitcoin Core original source: [bitcoin/bitcoin](https://github.com/bitcoin/bitcoin)
 
