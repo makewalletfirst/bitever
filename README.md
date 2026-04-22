@@ -103,7 +103,8 @@ make -j$(nproc)
 | Resource | URL |
 |---|---|
 | Block Explorer (Esplora) | https://bitever.ever-chain.xyz |
-| Block Explorer (RPC) | https://bitever2.ever-chain.xyz |
+| Block Explorer (Mempool) | https://bitever2.ever-chain.xyz |
+| Block Explorer (RPC) | https://bitever3.ever-chain.xyz |
 | Discord | https://discord.com/invite/dfSF58pzZB |
 | YouTube | http://www.youtube.com/@지만쫌 |
 
