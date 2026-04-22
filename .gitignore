@@ -1,4 +1,5 @@
-
+mk_bootstrap_rpc.py
+mining.sh
 *.exe
 *.pdb
 src/bitcoin

@@ -1,8 +1,0 @@
-ADDR=$(./src/bitcoin-cli -datadir=/home/makewalletfirst/myfork -rpcuser=user -rpcpassword=pass getnewaddress)
-
-채굴
-./src/bitcoin-cli -datadir=/home/makewalletfirst/myfork -rpcuser=user -rpcpassword=pass generatetoaddress 1 "$ADDR"
-
-100개 채굴
-for i in {1..100}; do   ./src/bitcoin-cli -datadir=/home/makewalletfirst/myfork -rpcuser=user -rpcpassword=pass generatetoaddress 1 $(./src/bitcoin-cli -datadir=/home/makewalletfirst/myfork -rpcuser=user -rpcpassword=pass  getnewaddress); done
-
