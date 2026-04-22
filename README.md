@@ -37,7 +37,9 @@ It is a live Bitcoin-equivalent chain built as an accessible environment where a
 ### Block Explorers
 - **Esplora-based Web Explorer** — [bitever.ever-chain.xyz](https://bitever.ever-chain.xyz)  
   Supports Satoshi-era wallet lookup (P2PKH → P2PK auto-query). First load may be slow.
-- **BTC-RPC Explorer** — [bitever2.ever-chain.xyz](https://bitever2.ever-chain.xyz)  
+- **Mempool.space Explorer** — [bitever2.ever-chain.xyz](https://bitever2.ever-chain.xyz)  
+  BEC can use all the functions of mempool.space in the same way.
+- **BTC-RPC Explorer** — [bitever3.ever-chain.xyz](https://bitever3.ever-chain.xyz)  
   RPC-level block and transaction inspection.
 
 ### Wallet
