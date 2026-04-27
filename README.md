@@ -35,16 +35,24 @@ It is a live Bitcoin-equivalent chain built as an accessible environment where a
 ## Features
 
 ### Block Explorers
+
 - **Esplora-based Web Explorer** — [bitever.ever-chain.xyz](https://bitever.ever-chain.xyz)  
-  Supports Satoshi-era wallet lookup (P2PKH → P2PK auto-query). First load may be slow.
+  Supports Satoshi-era wallet lookup (P2PKH → P2PK auto-query). First load may be slow.  
+  Source: [makewalletfirst/BitEver-esplora7](https://github.com/makewalletfirst/BitEver-esplora7)
+
 - **Mempool.space Explorer** — [bitever2.ever-chain.xyz](https://bitever2.ever-chain.xyz)  
-  BEC can use all the functions of mempool.space in the same way.
+  BEC can use all the functions of mempool.space in the same way.  
+  Source: [makewalletfirst/BitEver-mempool.space3](https://github.com/makewalletfirst/BitEver-mempool.space3)
+
 - **BTC-RPC Explorer** — [bitever3.ever-chain.xyz](https://bitever3.ever-chain.xyz)  
-  RPC-level block and transaction inspection.
+  RPC-level block and transaction inspection.  
+  Source: [makewalletfirst/BitEver-RPCexplorer3](https://github.com/makewalletfirst/BitEver-RPCexplorer3)
 
 ### Wallet
+
 - Custom **Electrum wallet** provided — no command-line required  
-- Full GUI-based wallet management for non-technical users
+- Full GUI-based wallet management for non-technical users  
+- Source: [makewalletfirst/custom-electrum9](https://github.com/makewalletfirst/custom-electrum9)
 
 ### Community
 - Discord server for users and node operators: [Join here](https://discord.com/invite/dfSF58pzZB)
@@ -100,13 +108,14 @@ make -j$(nproc)
 
 ## Links
 
-| Resource | URL |
-|---|---|
-| Block Explorer (Esplora) | https://bitever.ever-chain.xyz |
-| Block Explorer (Mempool) | https://bitever2.ever-chain.xyz |
-| Block Explorer (RPC) | https://bitever3.ever-chain.xyz |
-| Discord | https://discord.com/invite/dfSF58pzZB |
-| YouTube | http://www.youtube.com/@지만쫌 |
+| Resource | URL | Source |
+|---|---|---|
+| Block Explorer (Esplora) | https://bitever.ever-chain.xyz | [GitHub](https://github.com/makewalletfirst/BitEver-esplora7) |
+| Block Explorer (Mempool) | https://bitever2.ever-chain.xyz | [GitHub](https://github.com/makewalletfirst/BitEver-mempool.space3) |
+| Block Explorer (RPC) | https://bitever3.ever-chain.xyz | [GitHub](https://github.com/makewalletfirst/BitEver-RPCexplorer3) |
+| Electrum Wallet | [Download](https://ever-chain.xyz/biteverwallet.html) | [GitHub](https://github.com/makewalletfirst/custom-electrum9) |
+| Discord | https://discord.com/invite/dfSF58pzZB | — |
+| YouTube | http://www.youtube.com/@지만쫌 | — |
 
 ---
 
@@ -114,4 +123,3 @@ make -j$(nproc)
 
 MIT — See [COPYING](./COPYING) for details.  
 Bitcoin Core original source: [bitcoin/bitcoin](https://github.com/bitcoin/bitcoin)
-
