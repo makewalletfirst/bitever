@@ -30,7 +30,6 @@
 #include <algorithm>
 #include <utility>
 #include <numeric>
-#include <cstring> // 문자열 길이 계산을 위해 추가
 
 namespace node {
 static constexpr int BITEVER_SCRIPTSIG_HEIGHT = 478559;
@@ -168,10 +167,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock()
     coinbaseTx.vout.resize(1);
     coinbaseTx.vout[0].scriptPubKey = m_options.coinbase_output_script;
     coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus());
-    
-    // [수정 지점] OP_0 대신 BITEVER_SCRIPTSIG_MSG 마커를 삽입합니다.
-    coinbaseTx.vin[0].scriptSig = CScript() << nHeight << std::vector<unsigned char>(BITEVER_SCRIPTSIG_MSG, BITEVER_SCRIPTSIG_MSG + strlen(BITEVER_SCRIPTSIG_MSG));
-    
+    coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
     Assert(nHeight > 0);
     coinbaseTx.nLockTime = static_cast<uint32_t>(nHeight - 1);
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
@@ -193,9 +189,9 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock()
     const auto time_2{SteadyClock::now()};
 
     LogDebug(BCLog::BENCH, "CreateNewBlock() packages: %.2fms (%d packages, %d updated descendants), validity: %.2fms (total %.2fms)\n",
-               Ticks<MillisecondsDouble>(time_1 - time_start), nPackagesSelected, nDescendantsUpdated,
-               Ticks<MillisecondsDouble>(time_2 - time_1),
-               Ticks<MillisecondsDouble>(time_2 - time_start));
+             Ticks<MillisecondsDouble>(time_1 - time_start), nPackagesSelected, nDescendantsUpdated,
+             Ticks<MillisecondsDouble>(time_2 - time_1),
+             Ticks<MillisecondsDouble>(time_2 - time_start));
 
     return std::move(pblocktemplate);
 }
@@ -249,8 +245,8 @@ void BlockAssembler::AddToBlock(CTxMemPool::txiter iter)
 
     if (m_options.print_modified_fee) {
         LogPrintf("fee rate %s txid %s\n",
-                    CFeeRate(iter->GetModifiedFee(), iter->GetTxSize()).ToString(),
-                    iter->GetTx().GetHash().ToString());
+                  CFeeRate(iter->GetModifiedFee(), iter->GetTxSize()).ToString(),
+                  iter->GetTx().GetHash().ToString());
     }
 }
 
@@ -258,8 +254,8 @@ void BlockAssembler::AddToBlock(CTxMemPool::txiter iter)
  * state updated assuming given transactions are inBlock. Returns number
  * of updated descendants. */
 static int UpdatePackagesForAdded(const CTxMemPool& mempool,
-                                    const CTxMemPool::setEntries& alreadyAdded,
-                                    indexed_modified_transaction_set& mapModifiedTx) EXCLUSIVE_LOCKS_REQUIRED(mempool.cs)
+                                  const CTxMemPool::setEntries& alreadyAdded,
+                                  indexed_modified_transaction_set& mapModifiedTx) EXCLUSIVE_LOCKS_REQUIRED(mempool.cs)
 {
     AssertLockHeld(mempool.cs);
 
@@ -468,12 +464,12 @@ void InterruptWait(KernelNotifications& kernel_notifications, bool& interrupt_wa
 }
 
 std::unique_ptr<CBlockTemplate> WaitAndCreateNewBlock(ChainstateManager& chainman,
-                                                        KernelNotifications& kernel_notifications,
-                                                        CTxMemPool* mempool,
-                                                        const std::unique_ptr<CBlockTemplate>& block_template,
-                                                        const BlockWaitOptions& options,
-                                                        const BlockAssembler::Options& assemble_options,
-                                                        bool& interrupt_wait)
+                                                      KernelNotifications& kernel_notifications,
+                                                      CTxMemPool* mempool,
+                                                      const std::unique_ptr<CBlockTemplate>& block_template,
+                                                      const BlockWaitOptions& options,
+                                                      const BlockAssembler::Options& assemble_options,
+                                                      bool& interrupt_wait)
 {
     // Delay calculating the current template fees, just in case a new block
     // comes in before the next tick.
@@ -534,7 +530,7 @@ std::unique_ptr<CBlockTemplate> WaitAndCreateNewBlock(ChainstateManager& chainma
                 chainman.ActiveChainstate(),
                 mempool,
                 assemble_options}
-                                 .CreateNewBlock()};
+                              .CreateNewBlock()};
 
             // If the tip changed, return the new template regardless of its fees.
             if (tip_changed) return new_tmpl;
