@@ -13,7 +13,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Ubuntu 22.04 환경 빌드 및 테스트
   ubuntu-native:
     name: 'Ubuntu 22.04 Native Build'
     runs-on: ubuntu-22.04
@@ -34,7 +33,6 @@ jobs:
             libqrencode-dev \
             ccache mold
 
-      # 빌드 속도 향상을 위한 ccache 설정
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -55,6 +53,22 @@ jobs:
         run: cmake --build build -j $(nproc)
 
       - name: Run Unit Tests
+        id: test_step
+        shell: bash
+        # 로그를 test_result.log 파일에 저장하고, 실패하더라도 다음 step(업로드)을 진행하도록 함
         run: |
           export LC_ALL=C
-          ctest --test-dir build --output-on-failure -j $(nproc) --timeout 600
+          ctest --test-dir build --output-on-failure -j $(nproc) --timeout 600 > test_result.log 2>&1 || echo "TEST_FAILED=true" >> $GITHUB_ENV
+
+      # 테스트 로그 파일을 아티팩트로 업로드 (실패하더라도 항상 실행)
+      - name: Upload Test Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-logs
+          path: test_result.log
+
+      # 테스트가 실패했다면 최종적으로 잡을 실패 처리
+      - name: Check Test Status
+        if: env.TEST_FAILED == 'true'
+        run: exit 1
