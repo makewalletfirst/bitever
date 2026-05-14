@@ -31,7 +31,7 @@ jobs:
             systemtap-sdt-dev libzmq3-dev \
             qt6-base-dev qt6-tools-dev qt6-l10n-tools qt6-tools-dev-tools \
             libgl1-mesa-dev libglu1-mesa-dev \
-            libqrencode-dev capnproto libcapnp-dev \
+            libqrencode-dev \
             ccache mold
 
       # 빌드 속도 향상을 위한 ccache 설정
@@ -48,6 +48,7 @@ jobs:
             -DBUILD_GUI=ON \
             -DWITH_ZMQ=ON \
             -DBUILD_TESTS=ON \
+            -DENABLE_IPC=OFF \
             -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
