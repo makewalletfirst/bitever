@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Ubuntu 22.04 환경 빌드 및 테스트 (Windows 빌드 제거)
+  # Ubuntu 22.04 환경 빌드 및 테스트
   ubuntu-native:
     name: 'Ubuntu 22.04 Native Build'
     runs-on: ubuntu-22.04
@@ -29,7 +29,8 @@ jobs:
             python3 python3-zmq \
             libevent-dev libboost-dev libsqlite3-dev \
             systemtap-sdt-dev libzmq3-dev \
-            qt6-base-dev qt6-tools-dev qt6-l10n-tools \
+            qt6-base-dev qt6-tools-dev qt6-l10n-tools qt6-tools-dev-tools \
+            libgl1-mesa-dev libglu1-mesa-dev \
             libqrencode-dev capnproto libcapnp-dev \
             ccache mold
 
@@ -53,8 +54,6 @@ jobs:
         run: cmake --build build -j $(nproc)
 
       - name: Run Unit Tests
-        # 로그 폭주 방지를 위해 --output-on-failure만 유지 (성공 시 로그 미출력)
-        # 특정 테스트의 무한 루프를 방지하기 위해 개별 테스트당 10분 타임아웃 설정
         run: |
           export LC_ALL=C
           ctest --test-dir build --output-on-failure -j $(nproc) --timeout 600
