@@ -11,7 +11,8 @@ CLI="/root/bitever/build/bin/bitcoin-cli"
 #ADDR=$($CLI -datadir="$DATADIR" -rpcuser="$RPCUSER" -rpcpassword="$RPCPASS" -rpcport="$RPCPORT" getnewaddress)
 #ADDR="bc1qgwa7crngu9q7ummc7t6jemv2grz38tvmn60qzv"
 #ADDR="bc1qu8x4tmvendr0awnc93ey8dl2wvm7ua8t6fu2fa" #bit5
-ADDR="bc1qft3xkpzneehma0zfzm79zxewtj75j206sk7dtn" #bit7
+#ADDR="bc1qft3xkpzneehma0zfzm79zxewtj75j206sk7dtn" #bit7
+ADDR="bc1q0gzjvhzh5yzd3q9qluhrkalqwwkj3naq78aq87" #bit8
 echo "채굴 보상 주소: $ADDR"
 echo "10분마다 1블록씩 채굴 시작..."
 

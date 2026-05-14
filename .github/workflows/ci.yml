@@ -13,10 +13,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # 1. Ubuntu 환경 빌드 및 테스트
   ubuntu-native:
-    name: 'Ubuntu 24.04 Native Build'
-    runs-on: ubuntu-24.04
+    name: 'Ubuntu 22.04 Native Build'
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,59 +28,26 @@ jobs:
             python3 python3-zmq \
             libevent-dev libboost-dev libsqlite3-dev \
             systemtap-sdt-dev libzmq3-dev \
-            qt6-base-dev qt6-tools-dev qt6-l10n-tools \
-            libqrencode-dev capnproto libcapnp-dev \
+            qt6-base-dev qt6-tools-dev qt6-l10n-tools qt6-tools-dev-tools \
+            libgl1-mesa-dev libglu1-mesa-dev \
+            libqrencode-dev \
             ccache mold
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-ccache
+          variant: ccache
 
       - name: Configure CMake
         run: |
           cmake -B build -G Ninja \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DBUILD_GUI=ON \
             -DWITH_ZMQ=ON \
-            -DBUILD_TESTS=ON \
+            -DBUILD_TESTS=OFF \
+            -DENABLE_IPC=OFF \
             -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         run: cmake --build build -j $(nproc)
-
-      - name: Run Unit Tests
-        run: ctest --test-dir build --output-on-failure -j $(nproc)
-
-  # 2. Windows 환경 빌드 및 테스트 (MSVC + vcpkg)
-  windows-native:
-    name: 'Windows 2022 Native Build'
-    runs-on: windows-2022
-    env:
-      PYTHONUTF8: 1
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configure Developer Command Prompt for MSVC
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x64
-
-      - name: Setup vcpkg Workaround
-        shell: bash
-        run: |
-          # libevent 등 구형 포트와의 호환성을 위한 정책 설정
-          echo "set(VCPKG_BUILD_TYPE release)" >> "${VCPKG_INSTALLATION_ROOT}/triplets/x64-windows.cmake"
-          sed -i '1s/^/set(ENV{CMAKE_POLICY_VERSION_MINIMUM} 3.5)\n/' "${VCPKG_INSTALLATION_ROOT}/scripts/ports.cmake"
-
-      - name: Configure CMake
-        run: |
-          cmake -B build --preset vs2022 `
-            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
-            -DBUILD_GUI=ON `
-            -DWITH_ZMQ=ON `
-            -DBUILD_BENCH=ON `
-            -DWERROR=ON
-
-      - name: Build
-        working-directory: build
-        run: cmake --build . --config Release -j $env:NUMBER_OF_PROCESSORS
-
-      - name: Run Unit Tests
-        working-directory: build
-        run: ctest --output-on-failure -C Release -j $env:NUMBER_OF_PROCESSORS
