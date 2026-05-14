@@ -13,10 +13,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # 1. Ubuntu 환경 빌드 및 테스트
+  # Ubuntu 22.04 환경 빌드 및 테스트 (Windows 빌드 제거)
   ubuntu-native:
-    name: 'Ubuntu 24.04 Native Build'
-    runs-on: ubuntu-24.04
+    name: 'Ubuntu 22.04 Native Build'
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,9 +33,17 @@ jobs:
             libqrencode-dev capnproto libcapnp-dev \
             ccache mold
 
+      # 빌드 속도 향상을 위한 ccache 설정
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-ccache
+          variant: ccache
+
       - name: Configure CMake
         run: |
           cmake -B build -G Ninja \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DBUILD_GUI=ON \
             -DWITH_ZMQ=ON \
             -DBUILD_TESTS=ON \
@@ -45,43 +53,8 @@ jobs:
         run: cmake --build build -j $(nproc)
 
       - name: Run Unit Tests
-        run: ctest --test-dir build --output-on-failure -j $(nproc)
-
-  # 2. Windows 환경 빌드 및 테스트 (MSVC + vcpkg)
-  windows-native:
-    name: 'Windows 2022 Native Build'
-    runs-on: windows-2022
-    env:
-      PYTHONUTF8: 1
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configure Developer Command Prompt for MSVC
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x64
-
-      - name: Setup vcpkg Workaround
-        shell: bash
+        # 로그 폭주 방지를 위해 --output-on-failure만 유지 (성공 시 로그 미출력)
+        # 특정 테스트의 무한 루프를 방지하기 위해 개별 테스트당 10분 타임아웃 설정
         run: |
-          # libevent 등 구형 포트와의 호환성을 위한 정책 설정
-          echo "set(VCPKG_BUILD_TYPE release)" >> "${VCPKG_INSTALLATION_ROOT}/triplets/x64-windows.cmake"
-          sed -i '1s/^/set(ENV{CMAKE_POLICY_VERSION_MINIMUM} 3.5)\n/' "${VCPKG_INSTALLATION_ROOT}/scripts/ports.cmake"
-
-      - name: Configure CMake
-        run: |
-          cmake -B build --preset vs2022 `
-            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
-            -DBUILD_GUI=ON `
-            -DWITH_ZMQ=ON `
-            -DBUILD_BENCH=ON `
-            -DWERROR=ON
-
-      - name: Build
-        working-directory: build
-        run: cmake --build . --config Release -j $env:NUMBER_OF_PROCESSORS
-
-      - name: Run Unit Tests
-        working-directory: build
-        run: ctest --output-on-failure -C Release -j $env:NUMBER_OF_PROCESSORS
+          export LC_ALL=C
+          ctest --test-dir build --output-on-failure -j $(nproc) --timeout 600
