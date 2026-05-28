@@ -46,9 +46,9 @@ It is a live Bitcoin-equivalent chain built as an accessible environment where a
 
 ### Intentional Port Collision
 
-BitEver deliberately runs on **port 8333** — the same default port as Bitcoin mainnet. This is by design.
+- BitEver deliberately runs on **port 8333** — the same default port as Bitcoin mainnet. This is by design.
 
-Real Bitcoin nodes will reach out, complete a partial handshake, detect the network magic mismatch, and immediately drop the connection. Watching this **connect → verify → disconnect** cycle happen live — without any simulation or setup — is one of the most direct ways to understand how Bitcoin's peer authentication actually works at the protocol level.
+- Real Bitcoin nodes will reach out, complete a partial handshake, detect the network magic mismatch, and immediately drop the connection. Watching this **connect → verify → disconnect** cycle happen live — without any simulation or setup — is one of the most direct ways to understand how Bitcoin's peer authentication actually works at the protocol level.
 
 > The network is doing exactly what the protocol says it should.  
 > And that rejection loop is the lesson.
