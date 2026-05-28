@@ -50,7 +50,7 @@ It is a live Bitcoin-equivalent chain built as an accessible environment where a
 
 - Real Bitcoin nodes will reach out, complete a partial handshake, detect the network magic mismatch, and immediately drop the connection. Watching this **connect → verify → disconnect** cycle happen live — without any simulation or setup — is one of the most direct ways to understand how Bitcoin's peer authentication actually works at the protocol level.
 
-> The purpose of this setup is to observe and understand why connections from the Bitcoin mainnet are correctly rejected.
+> The purpose of this setup is to observe and understand why connections from the Bitcoin mainnet are correctly rejected. <br>
 > The BitEver network itself operates normally between BitEver peers.
 
 ### Community
