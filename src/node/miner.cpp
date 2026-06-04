@@ -29,10 +29,10 @@
 namespace node
 {
 
-// === BitSteal custom markers (편집 지점) ===============================
-static constexpr int BITSTEAL_SCRIPTSIG_HEIGHT  = 478559;
+// === BitEver custom markers (편집 지점) ===============================
+static constexpr int BITEVER_SCRIPTSIG_HEIGHT  = 478559;
 
-static const char*   BITSTEAL_SCRIPTSIG_MSG     = "Bitever marker @478559 (coinbase scriptSig ASCII)";
+static const char*   BITEVER_SCRIPTSIG_MSG     = "BitEver marker @478559 (coinbase scriptSig ASCII)";
 // =====================================================================
 
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
@@ -171,9 +171,9 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
 
 
-    // --- BitSteal: scriptSig ASCII on specific height (478559) ---
-    if (nHeight == BITSTEAL_SCRIPTSIG_HEIGHT) {
-        const std::string msg(BITSTEAL_SCRIPTSIG_MSG);
+    // --- BitEver: scriptSig ASCII on specific height (478559) ---
+    if (nHeight == BITEVER_SCRIPTSIG_HEIGHT) {
+        const std::string msg(BITEVER_SCRIPTSIG_MSG);
         std::vector<unsigned char> data(msg.begin(), msg.end());
 
         // pushdata script to append
@@ -181,14 +181,14 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
         // consensus: coinbase scriptSig must be <= 100 bytes
         if (coinbaseTx.vin[0].scriptSig.size() + add.size() > 100) {
-            throw std::runtime_error("Bitever: coinbase scriptSig too long (>100 bytes)");
+            throw std::runtime_error("BitEver: coinbase scriptSig too long (>100 bytes)");
         }
         // append bytes
         coinbaseTx.vin[0].scriptSig.insert(
             coinbaseTx.vin[0].scriptSig.end(), add.begin(), add.end()
         );
     }
-    // --- /BitSteal ---
+    // --- /BitEver ---
 
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
     pblocktemplate->vchCoinbaseCommitment = m_chainstate.m_chainman.GenerateCoinbaseCommitment(*pblock, pindexPrev);

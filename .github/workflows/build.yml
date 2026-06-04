@@ -40,7 +40,7 @@ jobs:
         make -j$(nproc)
         make install
 
-    - name: Configure BitSteal
+    - name: Configure BitEver
       run: |
         # ✅ 누락 Makefile 경로 대응
         mkdir -p src/qt/test
@@ -53,6 +53,6 @@ jobs:
           BDB_CFLAGS="-I/tmp/db4/include" \
           CXXFLAGS="-Wno-unused-result"
 
-    - name: Build BitSteal
+    - name: Build BitEver
       run: make -j$(nproc)
 
