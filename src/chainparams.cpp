@@ -132,6 +132,15 @@ public:
         vFixedSeeds.clear();
 
         vSeeds.emplace_back("bitevernode.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode2.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode3.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode4.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode5.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode6.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode7.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode8.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode9.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode10.ever-chain.xyz");
 
 
 
