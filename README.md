@@ -92,10 +92,10 @@ make -j$(nproc)
 
 ```bash
 # Start daemon (local only)
-./src/bitcoind -daemon
+./build/bin/bitcoind -daemon
 
 # Start and connect to the seed node
-./src/bitcoind -connect=bitevernode.ever-chain.xyz -daemon
+./build/bin/bitcoind -connect=bitevernode.ever-chain.xyz -daemon
 ```
 
 > DNS seed is served via pdns. The network is live and accepting peer connections.
