@@ -151,15 +151,15 @@ public:
         // release ASAP to avoid it where possible.
         vSeeds.clear();
         vSeeds.emplace_back("bitevernode.ever-chain.xyz");
-        vSeeds.emplace_back("bitevernode2.ever-chain.xyz");
-        vSeeds.emplace_back("bitevernode3.ever-chain.xyz");
-        vSeeds.emplace_back("bitevernode4.ever-chain.xyz");
-        vSeeds.emplace_back("bitevernode5.ever-chain.xyz");
-        vSeeds.emplace_back("bitevernode6.ever-chain.xyz");
-        vSeeds.emplace_back("bitevernode7.ever-chain.xyz");
-        vSeeds.emplace_back("bitevernode8.ever-chain.xyz");
-        vSeeds.emplace_back("bitevernode9.ever-chain.xyz");
-        vSeeds.emplace_back("bitevernode10.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode2.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode3.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode4.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode5.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode6.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode7.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode8.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode9.ever-chain.xyz");
+        // vSeeds.emplace_back("bitevernode10.ever-chain.xyz");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
