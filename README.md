@@ -12,7 +12,7 @@ The chain launched independently from Bitcoin block **#478,559**, forked at the 
 
 ---
 
-## What is BitEver?
+## What is BitEver? 
 
 BitEver is **not just another fork coin**.  
 It is a live Bitcoin-equivalent chain built as an accessible environment where anyone — from beginners to developers — can experience real blockchain mechanics: mining, wallet creation, and transaction signing.
