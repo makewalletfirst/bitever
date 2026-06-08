@@ -97,6 +97,7 @@ public:
         consensus.CSVHeight = 419328; // 000000000000000004a1b34462cb8aeebd5799177f7a29cf28f2d1961716b5b5
         consensus.SegwitHeight = 478560;
         consensus.nForkHeight = 478559;
+        consensus.nDifficultyAdjustmentHeight = 530208;
         consensus.powLimitPostFork = uint256{"0000ffff00000000000000000000000000000000000000000000000000000000"};
         consensus.fPowAllowMinDifficultyBlocksPostFork = true;
         consensus.fPowNoRetargetingPostFork = true; // 0000000000000000001c8018d9cb3b742ef25114f27563e3fc4a1902167f9893

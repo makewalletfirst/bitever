@@ -84,6 +84,7 @@ struct Params {
     uint256 hashGenesisBlock;
     int nSubsidyHalvingInterval;
     int nForkHeight = std::numeric_limits<int>::max();
+    int nDifficultyAdjustmentHeight = std::numeric_limits<int>::max();
     uint256 powLimitPostFork;
     bool fPowAllowMinDifficultyBlocksPostFork = false;
     bool fPowNoRetargetingPostFork = false;

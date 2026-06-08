@@ -165,7 +165,26 @@ make -j$(nproc)
 
 ---
 
+## Difficulty Adjustment Algorithm (DAA) Activation
+
+To transition BitEver from a fixed difficulty of 1 to Bitcoin's standard dynamic difficulty adjustment without invalidating the existing ~520,000 blocks mined at difficulty 1, we implemented a hard fork scheduled at block **#530,208**.
+
+### Key Changes
+- **Activation Height**: A new consensus parameter `nDifficultyAdjustmentHeight` is defined in [params.h](file:///root/BitEver/src/consensus/params.h) and set to `530208` in [chainparams.cpp](file:///root/BitEver/src/kernel/chainparams.cpp) (Mainnet).
+- **Difficulty Logic ([pow.cpp](file:///root/BitEver/src/pow.cpp))**:
+  - Blocks from **#478,559** to **#530,207** remain at static difficulty 1 (`powLimitPostFork`).
+  - Blocks starting from **#530,208** dynamically adjust difficulty every 2,016 blocks based on block timestamps.
+  - The absolute limit of post-fork difficulty calculation is capped at `powLimitPostFork` (difficulty 1).
+- **Header Sync Validation (`PermittedDifficultyTransition` in [pow.cpp](file:///root/BitEver/src/pow.cpp))**:
+  - The difficulty transition check now respects `powLimitPostFork` as the minimum difficulty limit for post-fork blocks, preventing header synchronization failures for new peers syncing from scratch.
+
+### Safe Transition Behavior
+Since the block time interval for the first 520,000+ blocks was extremely short, standard Bitcoin target calculations would normally cause difficulty to skyrocket instantly. However, because Bitcoin's consensus rules restrict difficulty adjustments to a maximum factor of 4 per epoch, the difficulty will rise gradually (from 1 to at most 4 at #530,208, and at most 16 at #532,224), preventing any chain freeze.
+
+---
+
 ## License
 
 MIT — See [COPYING](./COPYING) for details.  
 Bitcoin Core original source: [bitcoin/bitcoin](https://github.com/bitcoin/bitcoin)
+

@@ -14,16 +14,24 @@
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     const int nHeightNext = pindexLast ? (pindexLast->nHeight + 1) : 0;
-    if (nHeightNext >= params.nForkHeight) {
+    
+    // Retain static difficulty 1 post-fork until the activation height
+    if (nHeightNext >= params.nForkHeight && nHeightNext < params.nDifficultyAdjustmentHeight) {
         return UintToArith256(params.powLimitPostFork).GetCompact();
     }
+
     assert(pindexLast != nullptr);
-    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
+    unsigned int nProofOfWorkLimit = UintToArith256(
+        nHeightNext >= params.nForkHeight ? params.powLimitPostFork : params.powLimit
+    ).GetCompact();
 
     // Only change once per difficulty adjustment interval
     if ((pindexLast->nHeight+1) % params.DifficultyAdjustmentInterval() != 0)
     {
-        if (params.fPowAllowMinDifficultyBlocks)
+        const bool allow_min_difficulty = (nHeightNext >= params.nForkHeight) ?
+            params.fPowAllowMinDifficultyBlocksPostFork : params.fPowAllowMinDifficultyBlocks;
+
+        if (allow_min_difficulty)
         {
             // Special difficulty rule for testnet:
             // If the new block's timestamp is more than 2* 10 minutes
@@ -64,7 +72,10 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
         nActualTimespan = params.nPowTargetTimespan*4;
 
     // Retarget
-    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+    const int nHeightNext = pindexLast->nHeight + 1;
+    const arith_uint256 bnPowLimit = UintToArith256(
+        nHeightNext >= params.nForkHeight ? params.powLimitPostFork : params.powLimit
+    );
     arith_uint256 bnNew;
 
     // Special difficulty rule for Testnet4
@@ -92,13 +103,18 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
 // or decrease beyond the permitted limits.
 bool PermittedDifficultyTransition(const Consensus::Params& params, int64_t height, uint32_t old_nbits, uint32_t new_nbits)
 {
-    if (params.fPowAllowMinDifficultyBlocks) return true;
+    const bool allow_min_difficulty = (height >= params.nForkHeight) ?
+        params.fPowAllowMinDifficultyBlocksPostFork : params.fPowAllowMinDifficultyBlocks;
+
+    if (allow_min_difficulty) return true;
 
     if (height % params.DifficultyAdjustmentInterval() == 0) {
         int64_t smallest_timespan = params.nPowTargetTimespan/4;
         int64_t largest_timespan = params.nPowTargetTimespan*4;
 
-        const arith_uint256 pow_limit = UintToArith256(params.powLimit);
+        const arith_uint256 pow_limit = UintToArith256(
+            height >= params.nForkHeight ? params.powLimitPostFork : params.powLimit
+        );
         arith_uint256 observed_new_target;
         observed_new_target.SetCompact(new_nbits);
 
