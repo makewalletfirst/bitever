@@ -100,6 +100,9 @@ make -j$(nproc)
 
 > DNS seed is served via pdns. The network is live and accepting peer connections.
 
+> ⚠️ **Initial sync may take a very long time.** There is currently only one full node on the network.  
+> If you'd like to join as a node operator, email [makewalletfirst@gmail.com](mailto:makewalletfirst@gmail.com) — we'll send you a chain snapshot to get started quickly.
+
 ---
 
 ## Building with IPC Support (Cap'n Proto)
